@@ -1,0 +1,5 @@
+id,t_wall,t_mono,elapsed_s,label,note,speed_kmh,rpm
+1,2026-10-20T17:16:42.064+05:30,1257.5667,2.02,HARD ACCEL,Merging onto highway,6,1980
+2,2026-10-20T17:16:43.569+05:30,1259.0722,3.53,SMOOTH,Cruising 80 km/h,10,2363
+4,2026-10-20T17:16:45.594+05:30,1261.0968,5.55,HARD BRAKE,Sudden obstacle,14,2885
+5,2026-10-20T17:16:45.603+05:30,1261.1065,5.56,CONNECTION_LOST,Bluetooth connection lost; attempting reconnect,15,2890

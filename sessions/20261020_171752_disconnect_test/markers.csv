@@ -1,0 +1,3 @@
+id,t_wall,t_mono,elapsed_s,label,note,speed_kmh,rpm
+1,2026-10-20T17:17:54.736+05:30,1330.2393,2.02,SMOOTH,pre-drop,0,779
+2,2026-10-20T17:17:54.751+05:30,1330.254,2.04,CONNECTION_LOST,Bluetooth connection lost; attempting reconnect,0,780

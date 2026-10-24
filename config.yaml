@@ -1,0 +1,49 @@
+adapter:
+  address: "01:23:45:67:89:BA"
+  channel: 2
+  pin: "1234"
+  timeout_s: 2.0
+  wakeup_hold_s: 3.5
+
+server:
+  host: "0.0.0.0"
+  port: 8000
+
+recording:
+  output_dir: "sessions"
+  flush_interval_s: 1.0
+  auto_connect_on_start: false
+  auto_start_recording_on_connect: false
+  auto_stop_minutes: 0       # 0 = disabled
+  keep_armed: false          # automatically start new session if previous ended
+
+polling:
+  # Fast loop: polled continuously as fast as adapter allows
+  fast:
+    - "0D"   # Vehicle speed (km/h)
+    - "0C"   # Engine speed (RPM)
+    - "49"   # Accelerator pedal position D (%)
+    - "04"   # Calculated engine load (%)
+  
+  # Medium loop: round-robin polled approximately every 2-3 seconds
+  medium:
+    - "05"   # Engine coolant temperature (°C)
+    - "42"   # Control module voltage (V)
+    - "10"   # Mass air flow rate (g/s)
+    - "0B"   # Intake manifold absolute pressure (MAP) (kPa)
+    - "23"   # Fuel rail gauge pressure (kPa)
+  medium_interval_s: 2.5
+
+  # Slow loop: round-robin polled approximately every 30 seconds
+  slow:
+    - "0F"   # Intake air temperature (°C)
+    - "46"   # Ambient air temperature (°C)
+    - "33"   # Barometric pressure (kPa)
+  slow_interval_s: 30.0
+
+  batch_fast_if_supported: true
+
+vehicle:
+  name: "Ford EcoSport 1.5 TDCi"
+  vin: "MAJAXXMRKAFE35942"
+  protocol: "ISO 15765-4 CAN 11-bit 500k"

@@ -1,0 +1,68 @@
+{
+  "session_id": "20261020_171833_disconnect_check",
+  "session_name": "disconnect_check",
+  "start_time": "2026-10-20T17:18:33.380+05:30",
+  "end_time": "2026-10-20T17:18:42.901+05:30",
+  "duration_seconds": 9.52,
+  "vehicle": {
+    "name": "Ford EcoSport 1.5 TDCi",
+    "vin": "MAJAXXMRKAFE35942",
+    "protocol": "ISO 15765-4 CAN 11-bit 500k"
+  },
+  "adapter": {
+    "address": "MOCK",
+    "channel": 2
+  },
+  "polling_config": {
+    "fast": [
+      "0D",
+      "0C",
+      "49",
+      "04"
+    ],
+    "medium": [
+      "05",
+      "42",
+      "10",
+      "0B",
+      "23"
+    ],
+    "medium_interval_s": 2.5,
+    "slow": [
+      "0F",
+      "46",
+      "33"
+    ],
+    "slow_interval_s": 30.0,
+    "batch_fast_if_supported": true
+  },
+  "benchmark": {
+    "single_pid_latencies_ms": [
+      15.2,
+      15.3,
+      15.3,
+      15.2
+    ],
+    "single_pid_mean_ms": 15.2,
+    "multi_pid_tested": true,
+    "multi_pid_supported": true,
+    "fast_loop_mode": "batch",
+    "achieved_fast_hz": 43.8
+  },
+  "metrics": {
+    "total_raw_readings": 802,
+    "total_fast_cycles": 198,
+    "mean_fast_loop_hz": 46.11,
+    "min_fast_loop_hz": 0.19,
+    "max_fast_loop_hz": 48.64,
+    "gaps_over_2s_count": 1,
+    "gaps_over_2s_list": [
+      {
+        "t_wall": "2026-10-20T17:18:40.602+05:30",
+        "t_mono": 1376.105,
+        "duration_s": 5.195
+      }
+    ],
+    "marker_count": 3
+  }
+}

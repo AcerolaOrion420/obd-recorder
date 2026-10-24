@@ -1,0 +1,582 @@
+/* FleetPulse Standalone OBD-II Recorder Stylesheet */
+/* Mobile-first, Dark Theme, Zero External Dependencies */
+
+:root {
+  --bg-dark: #080c14;
+  --card-bg: #111827;
+  --card-border: #1f293d;
+  --card-inner: #0b111e;
+  --text-main: #f3f4f6;
+  --text-muted: #9ca3af;
+  --text-dim: #4b5563;
+
+  --cyan-glow: #06b6d4;
+  --amber-glow: #f59e0b;
+  --emerald-glow: #10b981;
+  --rose-glow: #ef4444;
+  --purple-glow: #8b5cf6;
+  --blue-glow: #3b82f6;
+
+  --btn-radius: 12px;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+}
+
+body {
+  background-color: var(--bg-dark);
+  color: var(--text-main);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  line-height: 1.4;
+  min-height: 100vh;
+  padding: 10px;
+  overflow-x: hidden;
+}
+
+.app-container {
+  max-width: 480px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding-bottom: 24px;
+}
+
+/* Alert Banner */
+.alert-banner {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  background-color: var(--rose-glow);
+  color: white;
+  text-align: center;
+  font-weight: 700;
+  font-size: 0.9rem;
+  padding: 10px;
+  z-index: 9999;
+  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.4);
+  animation: banner-pulse 1s infinite alternate;
+}
+.alert-banner.hidden {
+  display: none;
+}
+@keyframes banner-pulse {
+  from { opacity: 0.9; }
+  to { opacity: 1; transform: scale(1.01); }
+}
+
+/* Header */
+.app-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 4px;
+}
+.brand h1 {
+  font-size: 1.3rem;
+  font-weight: 900;
+  letter-spacing: 1.5px;
+  color: #fff;
+}
+.brand .subtitle {
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 2px;
+  color: var(--cyan-glow);
+  display: block;
+}
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.badge {
+  font-size: 0.7rem;
+  font-weight: 800;
+  padding: 4px 8px;
+  border-radius: 6px;
+  letter-spacing: 1px;
+}
+.badge-subtle {
+  background: #1e293b;
+  color: var(--text-muted);
+  border: 1px solid var(--card-border);
+}
+.btn-icon {
+  background: #1e293b;
+  border: 1px solid var(--card-border);
+  color: var(--text-main);
+  padding: 6px 10px;
+  border-radius: 8px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+.btn-icon.active {
+  background: rgba(16, 185, 129, 0.2);
+  border-color: var(--emerald-glow);
+  color: var(--emerald-glow);
+}
+
+/* Cards */
+.card {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 16px;
+  padding: 14px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+}
+
+/* Buttons */
+.btn {
+  border: none;
+  border-radius: var(--btn-radius);
+  font-weight: 700;
+  font-size: 0.9rem;
+  padding: 10px 16px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+}
+.btn:active {
+  transform: scale(0.97);
+}
+.btn:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+  transform: none;
+}
+.btn-primary {
+  background: var(--blue-glow);
+  color: white;
+}
+.btn-secondary {
+  background: #334155;
+  color: #cbd5e1;
+}
+.btn-success {
+  background: var(--emerald-glow);
+  color: #022c22;
+}
+.btn-danger {
+  background: var(--rose-glow);
+  color: white;
+}
+.btn-outline-warning {
+  background: transparent;
+  border: 1px solid var(--amber-glow);
+  color: var(--amber-glow);
+}
+.btn-sm {
+  padding: 6px 10px;
+  font-size: 0.75rem;
+  min-height: 32px;
+}
+.btn-large {
+  flex: 1;
+  min-height: 54px;
+  font-size: 1.05rem;
+  letter-spacing: 0.5px;
+}
+.btn-link {
+  background: transparent;
+  border: none;
+  color: var(--cyan-glow);
+  font-size: 0.75rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+/* Connection Panel */
+.status-indicator-box {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.status-pill {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--card-inner);
+  border: 1px solid var(--card-border);
+  padding: 10px 14px;
+  border-radius: 12px;
+  font-weight: 800;
+  font-size: 0.95rem;
+  letter-spacing: 0.5px;
+}
+.pulse-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+/* Status States */
+.status-pill.disconnected .pulse-dot { background: #64748b; }
+.status-pill.disconnected { color: #94a3b8; }
+
+.status-pill.waking .pulse-dot { background: var(--purple-glow); animation: pulse 0.8s infinite; }
+.status-pill.waking { color: var(--purple-glow); border-color: rgba(139, 92, 246, 0.4); }
+
+.status-pill.connecting .pulse-dot { background: var(--amber-glow); animation: pulse 0.8s infinite; }
+.status-pill.connecting { color: var(--amber-glow); border-color: rgba(245, 158, 11, 0.4); }
+
+.status-pill.connected .pulse-dot { background: var(--emerald-glow); box-shadow: 0 0 10px var(--emerald-glow); }
+.status-pill.connected { color: var(--emerald-glow); border-color: rgba(16, 185, 129, 0.4); }
+
+.status-pill.ecu_not_responding .pulse-dot { background: #f97316; animation: pulse 1s infinite; }
+.status-pill.ecu_not_responding { color: #f97316; border-color: rgba(249, 115, 22, 0.4); }
+
+.status-pill.reconnecting .pulse-dot { background: var(--rose-glow); animation: pulse 0.5s infinite; }
+.status-pill.reconnecting { color: var(--rose-glow); border-color: rgba(239, 68, 68, 0.4); }
+
+@keyframes pulse {
+  0% { transform: scale(0.85); opacity: 0.5; }
+  50% { transform: scale(1.2); opacity: 1; }
+  100% { transform: scale(0.85); opacity: 0.5; }
+}
+
+.connection-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+.connection-options {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 10px;
+  padding-top: 8px;
+  border-top: 1px solid #1a2234;
+}
+.checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  cursor: pointer;
+}
+.checkbox-label input[type="checkbox"] {
+  accent-color: var(--cyan-glow);
+  width: 16px;
+  height: 16px;
+}
+
+/* Recording Panel */
+.recording-header {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.session-input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.session-input-group label {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  letter-spacing: 0.5px;
+}
+.session-input-group input {
+  background: var(--card-inner);
+  border: 1px solid var(--card-border);
+  color: white;
+  padding: 10px 12px;
+  border-radius: var(--btn-radius);
+  font-size: 0.95rem;
+  outline: none;
+  font-family: inherit;
+}
+.session-input-group input:focus {
+  border-color: var(--cyan-glow);
+}
+.rec-buttons {
+  display: flex;
+  gap: 8px;
+}
+.recording-ticker {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr 1fr;
+  background: var(--card-inner);
+  border: 1px solid var(--card-border);
+  border-radius: 12px;
+  padding: 10px 12px;
+  margin-top: 12px;
+}
+.ticker-item {
+  display: flex;
+  flex-direction: column;
+}
+.ticker-label {
+  font-size: 0.65rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  letter-spacing: 0.5px;
+}
+.ticker-val {
+  font-size: 1.05rem;
+  font-weight: 800;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  color: #fff;
+}
+.rec-options-details {
+  margin-top: 10px;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+.rec-options-details summary {
+  cursor: pointer;
+  font-weight: 600;
+}
+.options-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 8px;
+  padding: 8px;
+  background: var(--card-inner);
+  border-radius: 8px;
+}
+
+/* Health Strip */
+.health-strip {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  background: var(--card-inner);
+  border-radius: 10px;
+  padding: 6px 8px;
+  border: 1px solid var(--card-border);
+  margin-bottom: 12px;
+}
+.health-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.health-label {
+  font-size: 0.6rem;
+  font-weight: 700;
+  color: var(--text-dim);
+  letter-spacing: 0.5px;
+}
+.health-val {
+  font-size: 0.85rem;
+  font-weight: 800;
+  font-family: ui-monospace, monospace;
+  color: #cbd5e1;
+}
+.health-val.warning {
+  color: var(--rose-glow) !important;
+}
+
+/* Primary Gauges */
+.primary-gauges {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+.gauge-box {
+  background: var(--card-inner);
+  border: 1px solid var(--card-border);
+  border-radius: 14px;
+  padding: 14px 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+}
+.speed-box {
+  border-bottom: 3px solid var(--cyan-glow);
+}
+.rpm-box {
+  border-bottom: 3px solid var(--amber-glow);
+}
+.gauge-title {
+  font-size: 0.7rem;
+  font-weight: 800;
+  letter-spacing: 1px;
+  color: var(--text-muted);
+  margin-bottom: 4px;
+}
+.gauge-main {
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+}
+.big-num {
+  font-size: 2.8rem;
+  font-weight: 900;
+  font-family: ui-monospace, SFMono-Regular, monospace;
+  line-height: 1;
+}
+.speed-box .big-num { color: var(--cyan-glow); }
+.rpm-box .big-num { color: #fff; }
+.rpm-box.redline .big-num { color: var(--rose-glow); }
+.unit {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--text-muted);
+}
+
+/* Rolling Chart */
+.chart-container {
+  background: var(--card-inner);
+  border: 1px solid var(--card-border);
+  border-radius: 12px;
+  padding: 8px 10px 4px 10px;
+  margin-bottom: 12px;
+}
+.chart-header {
+  font-size: 0.65rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  margin-bottom: 4px;
+}
+#rolling-chart {
+  width: 100%;
+  height: 80px;
+  display: block;
+}
+
+/* Secondary Grid */
+.secondary-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+}
+.stat-pill {
+  background: var(--card-inner);
+  border: 1px solid var(--card-border);
+  border-radius: 10px;
+  padding: 8px 6px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.stat-lbl {
+  font-size: 0.6rem;
+  font-weight: 700;
+  color: var(--text-muted);
+}
+.stat-num {
+  font-size: 1rem;
+  font-weight: 800;
+  font-family: ui-monospace, monospace;
+  color: #fff;
+  margin-top: 2px;
+}
+
+/* Marker Panel (Most Important For Tagging) */
+.marker-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+.section-title {
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 1px;
+  color: var(--text-muted);
+}
+.last-marker-box {
+  background: var(--card-inner);
+  border: 1px solid #1e293b;
+  border-radius: 8px;
+  padding: 6px 10px;
+  font-size: 0.8rem;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.last-lbl { color: var(--text-dim); font-weight: 700; }
+.last-val { color: var(--emerald-glow); font-weight: 800; }
+.last-ago { color: var(--text-muted); font-size: 0.75rem; margin-left: auto; }
+
+/* Large Touch Marker Buttons Grid */
+.marker-buttons-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+.btn-marker {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 74px;
+  border-radius: 14px;
+  border: none;
+  cursor: pointer;
+  font-weight: 800;
+  transition: transform 0.1s ease, filter 0.15s ease;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+.btn-marker:active {
+  transform: scale(0.95);
+  filter: brightness(1.2);
+}
+.marker-icon {
+  font-size: 1.4rem;
+  margin-bottom: 2px;
+}
+.marker-text {
+  font-size: 0.95rem;
+  letter-spacing: 0.5px;
+}
+.key-hint {
+  position: absolute;
+  top: 6px;
+  right: 8px;
+  font-size: 0.65rem;
+  background: rgba(0, 0, 0, 0.35);
+  padding: 2px 5px;
+  border-radius: 4px;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+/* Button Colors */
+.marker-brake {
+  background: linear-gradient(135deg, #dc2626, #b91c1c);
+  color: white;
+}
+.marker-accel {
+  background: linear-gradient(135deg, #ea580c, #c2410c);
+  color: white;
+}
+.marker-smooth {
+  background: linear-gradient(135deg, #059669, #047857);
+  color: white;
+}
+.marker-idle-start {
+  background: linear-gradient(135deg, #d97706, #b45309);
+  color: white;
+}
+.marker-idle-end {
+  background: linear-gradient(135deg, #2563eb, #1d4ed8);
+  color: white;
+}
+.marker-other {
+  background: linear-gradient(135deg, #475569, #334155);
+  color: white;
+}
+
+/* Utilities */
+.hidden { display: none !important; }

@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>FleetPulse OBD-II Recorder</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <!-- Offline / Disconnected Warning Banner -->
+  <div id="alert-banner" class="alert-banner hidden">
+    <span id="alert-message">⚠️ Connection Lost to Adapter</span>
+  </div>
+
+  <div class="app-container">
+    <!-- Header -->
+    <header class="app-header">
+      <div class="brand">
+        <h1>FLEETPULSE</h1>
+        <span class="subtitle">OBD-II DATA RECORDER</span>
+      </div>
+      <div class="header-right">
+        <span id="badge-mode" class="badge badge-subtle">LIVE</span>
+        <button id="btn-wake-lock" class="btn-icon" title="Keep Screen Awake">📱 Wake Lock</button>
+      </div>
+    </header>
+
+    <!-- Connection Panel -->
+    <section class="card connection-card">
+      <div class="status-indicator-box">
+        <div id="status-pill" class="status-pill disconnected">
+          <span class="pulse-dot"></span>
+          <span id="status-text">Disconnected</span>
+        </div>
+        <div class="connection-actions">
+          <button id="btn-connect" class="btn btn-primary">Connect</button>
+          <button id="btn-disconnect" class="btn btn-secondary">Disconnect</button>
+        </div>
+      </div>
+      <div class="connection-options">
+        <label class="checkbox-label">
+          <input type="checkbox" id="chk-autoconnect">
+          <span>Auto-connect on startup</span>
+        </label>
+        <button id="btn-sim-drop" class="btn-link hidden" title="Simulate Disconnect for testing">⚡ Sim Drop</button>
+      </div>
+    </section>
+
+    <!-- Recording Control Panel -->
+    <section class="card recording-card">
+      <div class="recording-header">
+        <div class="session-input-group">
+          <label for="session-name">Session Name</label>
+          <input type="text" id="session-name" placeholder="e.g. highway_run_01" value="run">
+        </div>
+        <div class="rec-buttons">
+          <button id="btn-start-rec" class="btn btn-success btn-large">● START</button>
+          <button id="btn-stop-rec" class="btn btn-danger btn-large" disabled>■ STOP</button>
+        </div>
+      </div>
+
+      <!-- Recording Stats Ticker -->
+      <div class="recording-ticker">
+        <div class="ticker-item">
+          <span class="ticker-label">ELAPSED</span>
+          <span id="rec-elapsed" class="ticker-val">00:00:00</span>
+        </div>
+        <div class="ticker-item">
+          <span class="ticker-label">CYCLES</span>
+          <span id="rec-cycles" class="ticker-val">0</span>
+        </div>
+        <div class="ticker-item">
+          <span class="ticker-label">FILE SIZE</span>
+          <span id="rec-size" class="ticker-val">0.0 KB</span>
+        </div>
+      </div>
+
+      <!-- Recording Options Collapsible -->
+      <details class="rec-options-details">
+        <summary>Automation Options</summary>
+        <div class="options-grid">
+          <label class="checkbox-label">
+            <input type="checkbox" id="chk-autostart">
+            <span>Auto-start on connect</span>
+          </label>
+          <label class="checkbox-label">
+            <input type="checkbox" id="chk-keeparmed">
+            <span>Keep armed (auto re-arm)</span>
+          </label>
+          <label class="checkbox-label">
+            <input type="checkbox" id="chk-autostop">
+            <span>Auto-stop on 5m no data</span>
+          </label>
+        </div>
+      </details>
+    </section>
+
+    <!-- Live Telemetry Readouts -->
+    <section class="card telemetry-card">
+      <!-- Health Strip -->
+      <div class="health-strip">
+        <div class="health-item">
+          <span class="health-label">RATE</span>
+          <span id="health-hz" class="health-val">0.0 Hz</span>
+        </div>
+        <div class="health-item">
+          <span class="health-label">AGE</span>
+          <span id="health-age" class="health-val">0.0s</span>
+        </div>
+        <div class="health-item">
+          <span class="health-label">ERRORS</span>
+          <span id="health-errors" class="health-val">0</span>
+        </div>
+        <div class="health-item">
+          <span class="health-label">RECONNECTS</span>
+          <span id="health-reconnects" class="health-val">0</span>
+        </div>
+      </div>
+
+      <!-- Primary Big Gauges -->
+      <div class="primary-gauges">
+        <div class="gauge-box speed-box">
+          <span class="gauge-title">SPEED</span>
+          <div class="gauge-main">
+            <span id="val-speed" class="big-num">0</span>
+            <span class="unit">KM/H</span>
+          </div>
+        </div>
+
+        <div class="gauge-box rpm-box">
+          <span class="gauge-title">ENGINE RPM</span>
+          <div class="gauge-main">
+            <span id="val-rpm" class="big-num">0</span>
+            <span class="unit">RPM</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Rolling Real-time Canvas Charts (Last 60s) -->
+      <div class="chart-container">
+        <div class="chart-header">
+          <span>Speed (Cyan) & RPM (Amber) — 60s History</span>
+        </div>
+        <canvas id="rolling-chart" width="360" height="90"></canvas>
+      </div>
+
+      <!-- Secondary Metrics Grid -->
+      <div class="secondary-grid">
+        <div class="stat-pill">
+          <span class="stat-lbl">PEDAL D</span>
+          <span id="val-pedal" class="stat-num">0.0%</span>
+        </div>
+        <div class="stat-pill">
+          <span class="stat-lbl">LOAD</span>
+          <span id="val-load" class="stat-num">0.0%</span>
+        </div>
+        <div class="stat-pill">
+          <span class="stat-lbl">COOLANT</span>
+          <span id="val-coolant" class="stat-num">--°C</span>
+        </div>
+        <div class="stat-pill">
+          <span class="stat-lbl">VOLTAGE</span>
+          <span id="val-voltage" class="stat-num">--V</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Event Marker Panel (Mobile First Large Touch Buttons) -->
+    <section class="card marker-card">
+      <div class="marker-header">
+        <span class="section-title">TAG DRIVER EVENT (1-6)</span>
+        <button id="btn-undo-marker" class="btn btn-outline-warning btn-sm">↺ UNDO LAST</button>
+      </div>
+
+      <!-- Last Marker Status Banner -->
+      <div id="last-marker-display" class="last-marker-box">
+        <span class="last-lbl">Last:</span>
+        <span id="last-marker-text" class="last-val">None</span>
+        <span id="last-marker-ago" class="last-ago"></span>
+      </div>
+
+      <!-- Grid of Very Large Touch Targets -->
+      <div class="marker-buttons-grid">
+        <button class="btn-marker marker-brake" data-label="HARD BRAKE" data-key="1">
+          <span class="marker-icon">🛑</span>
+          <span class="marker-text">HARD BRAKE</span>
+          <span class="key-hint">1</span>
+        </button>
+
+        <button class="btn-marker marker-accel" data-label="HARD ACCEL" data-key="2">
+          <span class="marker-icon">🚀</span>
+          <span class="marker-text">HARD ACCEL</span>
+          <span class="key-hint">2</span>
+        </button>
+
+        <button class="btn-marker marker-smooth" data-label="SMOOTH" data-key="3">
+          <span class="marker-icon">🟢</span>
+          <span class="marker-text">SMOOTH</span>
+          <span class="key-hint">3</span>
+        </button>
+
+        <button class="btn-marker marker-idle-start" data-label="IDLE START" data-key="4">
+          <span class="marker-icon">⏸</span>
+          <span class="marker-text">IDLE START</span>
+          <span class="key-hint">4</span>
+        </button>
+
+        <button class="btn-marker marker-idle-end" data-label="IDLE END" data-key="5">
+          <span class="marker-icon">▶</span>
+          <span class="marker-text">IDLE END</span>
+          <span class="key-hint">5</span>
+        </button>
+
+        <button class="btn-marker marker-other" data-label="OTHER" data-key="6">
+          <span class="marker-icon">📝</span>
+          <span class="marker-text">OTHER...</span>
+          <span class="key-hint">6</span>
+        </button>
+      </div>
+    </section>
+  </div>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>
